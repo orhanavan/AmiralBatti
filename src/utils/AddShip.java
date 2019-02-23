@@ -8,32 +8,30 @@ import java.util.Scanner;
 
 public class AddShip extends Master {
 
-    private static int NUM_BOAT = 1, NUM_MINESWEEPER = 1, NUM_FRIGATE = 1, NUM_DESTROYER = 1;
-    private static String[][] screen = new String[11][11];
-    private static String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
-    private static List<Ship> myShips;
+    private int NUM_BOAT = 0, NUM_MINESWEEPER = 0, NUM_FRIGATE = 0, NUM_DESTROYER = 1;
+    private String[][] screen = new String[11][11];
+    private List<Ship> myShips;
 
     public List<Ship> getMyShips() {
         return myShips;
     }
 
     // default constructor
-    public AddShip() {
-        myShips = new ArrayList<>();
-        initScreen();
-        autoManuelSelect();
-    }
-
-    // auto constructor
     public AddShip(boolean auto) {
         myShips = new ArrayList<>();
-        initScreen();
-        autoInitShips();
+        initScreen(screen);
+
+        if (auto) {
+            autoInitShips();
+        } else {
+            autoManuelSelect();
+        }
     }
 
     private void autoManuelSelect() {
         Scanner reader = new Scanner(System.in);
 
+        label:
         while (true) {
             System.out.println();
             System.out.println("(0) Manual");
@@ -41,22 +39,22 @@ public class AddShip extends Master {
             System.out.println("\nSelect fitting type of ships:");
 
             String select = reader.nextLine();
-            if (select.equals("0")) {
-                initShips();
-                break;
-            } else if (select.equals("1")) {
-                autoInitShips();
-                printScreen();
-                break;
-            } else {
-                System.out.println("Wrong fit type. Try again.");
+            switch (select) {
+                case "0":
+                    initShips();
+                    break label;
+                case "1":
+                    autoInitShips();
+                    printScreen(screen, true);
+                    break label;
+                default:
+                    System.out.println("Wrong fit type. Try again.");
+                    break;
             }
         }
-
     }
 
-
-    private static void autoInitShips() {
+    private void autoInitShips() {
         for (int i = 0; i < NUM_BOAT; i++) {
             myShips.add(new Boat(setRandomCoordinates(1)));
         }
@@ -77,7 +75,7 @@ public class AddShip extends Master {
     private void initShips() {
 
         while (true) {
-            printScreen();
+            printScreen(screen, true);
 
             System.out.println();
             System.out.println("Key │ Class       │ Length │ Unit Num ");
@@ -120,13 +118,10 @@ public class AddShip extends Master {
                 default:
                     System.out.println("Wrong type!");
             }
-
         }
-
     }
 
-
-    private static String[] setRandomCoordinates(int length) {
+    private String[] setRandomCoordinates(int length) {
         String alignment;
         int x, y;
 
@@ -145,7 +140,6 @@ public class AddShip extends Master {
         }
 
         return addShip(alignment, length, x, y);
-
     }
 
     private String[] setCoordinates(int length) {
@@ -171,7 +165,7 @@ public class AddShip extends Master {
         return addShip(alignment, length, letterToNum(x), Integer.parseInt(y));
     }
 
-    private static boolean isViolate(String alignment, int length, int x, int y) {
+    private boolean isViolate(String alignment, int length, int x, int y) {
         String[] coordinates = new String[length];
 
         if (alignment.equals("V")) {
@@ -205,56 +199,21 @@ public class AddShip extends Master {
         return false;
     }
 
-    private static String[] addShip(String alignment, int length, int x, int y) {
+    private String[] addShip(String alignment, int length, int x, int y) {
         String[] coordinates = new String[length];
 
         if (alignment.equals("V")) {
             for (int i = 0; i < length; i++) {
-                coordinates[i] = "" + letters[x - 1] + y;
+                coordinates[i] = "" + Master.letters[x - 1] + y;
                 screen[x++][y] = "░░░";
             }
         } else if (alignment.equals("H")) {
             for (int i = 0; i < length; i++) {
-                coordinates[i] = "" + letters[x - 1] + y;
+                coordinates[i] = "" + Master.letters[x - 1] + y;
                 screen[x][y++] = "░░░";
             }
         }
 
         return coordinates;
-    }
-
-    // Tüm ekranın ilk değerlerini atar
-    private static void initScreen() {
-        for (int i = 0; i < screen.length; i++) {
-
-            for (int j = 0; j < screen.length; j++) {
-
-                if (i == 0) {
-                    if (j == 0)
-                        screen[i][j] = "   ";
-                    else
-                        screen[i][j] = " " + String.valueOf(j) + " ";
-                } else if (j == 0) {
-                    screen[i][j] = " " + letters[i - 1] + " ";
-                } else {
-                    screen[i][j] = " . ";
-                }
-            }
-        }
-    }
-
-    /**
-     * Tüm ekranı yazdırır
-     */
-    private static void printScreen() {
-
-        for (int i = 0; i < 50; i++) System.out.println();
-
-        for (String[] aScreen : screen) {
-            for (int j = 0; j < screen.length; j++) {
-                System.out.print(aScreen[j]);
-            }
-            System.out.println();
-        }
     }
 }

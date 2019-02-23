@@ -3,6 +3,7 @@ package utils;
 import model.ships.Ship;
 import model.user.Player;
 
+import javax.net.ssl.SNIHostName;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,7 +13,6 @@ public class Game extends Master {
     private int level;
     private String[][] screen1;
     private String[][] screen2;
-
 
     public Game() {
         selectLevel();
@@ -28,21 +28,50 @@ public class Game extends Master {
         return level;
     }
 
-
     public void startGame(Player player1, Player player2) {
         initScreen(screen1);
         initScreen(screen2);
 
+        Scanner reader = new Scanner(System.in);
         addShipSign(screen1, player1.getShips());
         addShipSign(screen2, player2.getShips());
 
-        System.out.println("               YOU                ");
-        System.out.println("──────────────────────────────────");
-        printScreen(screen1, false);
+        String shootResult = "";
 
-        System.out.println("              ENEMY               ");
-        System.out.println("──────────────────────────────────");
-        printScreen(screen2, false);
+        while (true) {
+
+            System.out.println("               YOU                ");
+            System.out.println("──────────────────────────────────");
+            printScreen(screen1, false);
+
+            System.out.println("              ENEMY               ");
+            System.out.println("──────────────────────────────────");
+            printScreen(screen2, false);
+
+            System.out.println(shootResult);
+            System.out.println("Your turn.\nGuess the location of the Enemy's ship!");
+            String hitPoint = reader.nextLine();
+            shootResult = shoot(hitPoint, screen2);
+            if (hitPoint.equals("kill"))
+                break;
+        }
+
+
+    }
+
+    private String shoot(String hitPoint, String[][] enemyScreen) {
+        slowly("...");
+
+        int x = letterToNum(hitPoint.substring(0, 1));
+        int y = Integer.parseInt(hitPoint.substring(1, hitPoint.length()));
+
+        if (enemyScreen[x][y].equals("░░░")) {
+            enemyScreen[x][y] = " X ";
+            return "Hit !";
+        } else {
+            enemyScreen[x][y] = " ○ ";
+            return "Missed.";
+        }
 
     }
 
@@ -93,6 +122,5 @@ public class Game extends Master {
                     break;
             }
         }
-
     }
 }

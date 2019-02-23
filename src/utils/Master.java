@@ -2,7 +2,7 @@ package utils;
 
 abstract class Master {
 
-    private static String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+    public static String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
 
     public void initScreen(String[][] screen) {
         for (int i = 0; i < screen.length; i++) {
@@ -61,6 +61,20 @@ abstract class Master {
             default:
                 return 11;
         }
+    }
+
+    public void slowly(String text) {
+        String[] txt = text.split("");
+        for (String aTxt : txt) {
+            System.out.print(aTxt);
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println();
     }
 
 }
