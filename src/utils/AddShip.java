@@ -44,9 +44,24 @@ public class AddShip extends Master {
                     initShips();
                     break label;
                 case "1":
-                    autoInitShips();
-                    printScreen(screen, true);
-                    break label;
+
+                    while (true) {
+                        autoInitShips();
+                        printScreen(screen, true);
+
+                        System.out.println("(0) OK");
+                        System.out.println("(1) Refresh");
+                        String isOK = reader.nextLine();
+
+                        if (isOK.equals("0")) {
+                            break label;
+                        } else if (isOK.equals("1")) {
+                            initScreen(screen);
+                            myShips.clear();
+                        }
+
+                    }
+
                 default:
                     System.out.println("Wrong fit type. Try again.");
                     break;

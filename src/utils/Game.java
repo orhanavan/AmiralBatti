@@ -35,24 +35,45 @@ public class Game extends Master {
         printBattlefield();
         while (true) {
 
-            System.out.println("\nYour turn.\nGuess the location of the Enemy's ship!");
-            String hitUser = reader.nextLine();
-            shoot(hitUser, screen2);
-            printBattlefield();
+            while (true) {
 
-            System.out.println("\nRival's turn.");
-            String hitAI = ai.getGuess();
-            sleepMe(2000);
-            slowly(hitAI);
-            shoot(hitAI, screen1);
-            printBattlefield();
+                System.out.println("Your turn.\nGuess the location of the Enemy's ship!");
+                String hitUser = reader.nextLine();
 
-            if (hitUser.equals("kill"))
-                break;
+                boolean resultUser = shoot(hitUser, screen2);
+                printShootResult("You", resultUser);
+
+                if (!resultUser)
+                    break;
+            }
+
+            while (true) {
+
+                System.out.println("Rival's turn.");
+                String hitAI = ai.getGuess();
+                sleepMe(2000);
+                slowly(hitAI);
+
+                boolean resultBot = shoot(hitAI, screen1);
+                printShootResult("Rival", resultBot);
+
+                if (!resultBot)
+                    break;
+            }
+
         }
     }
 
+    private void printShootResult(String who, boolean result) {
+        if (result)
+            System.out.println(who + " Hit !");
+        else
+            System.out.println(who + " Missed.");
+    }
+
     private void printBattlefield() {
+        for (int i = 0 ; i < 50; i++) System.out.println();
+
         System.out.println("               YOU                ");
         System.out.println("──────────────────────────────────");
         printScreen(screen1, false);
@@ -62,18 +83,20 @@ public class Game extends Master {
         printScreen(screen2, false);
     }
 
-    private void shoot(String hitPoint, String[][] enemyScreen) {
+    private boolean shoot(String hitPoint, String[][] enemyScreen) {
         slowly("...");
 
         int x = letterToNum(hitPoint.substring(0, 1));
         int y = Integer.parseInt(hitPoint.substring(1, hitPoint.length()));
 
         if (enemyScreen[x][y].equals("░░░")) {
-            System.out.println("Hit !");
             enemyScreen[x][y] = " X ";
+            printBattlefield();
+            return true;
         } else {
-            System.out.println("Missed.");
             enemyScreen[x][y] = " ○ ";
+            printBattlefield();
+            return false;
         }
 
     }
