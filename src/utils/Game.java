@@ -1,16 +1,16 @@
 package utils;
 
+import ai.AI;
 import model.ships.Ship;
 import model.user.Player;
 
-import javax.net.ssl.SNIHostName;
 import java.util.List;
 import java.util.Scanner;
 
 public class Game extends Master {
 
     private String username;
-    private int level;
+    private AI ai;
     private String[][] screen1;
     private String[][] screen2;
 
@@ -24,10 +24,6 @@ public class Game extends Master {
         return username;
     }
 
-    public int getLevel() {
-        return level;
-    }
-
     public void startGame(Player player1, Player player2) {
         initScreen(screen1);
         initScreen(screen2);
@@ -36,41 +32,48 @@ public class Game extends Master {
         addShipSign(screen1, player1.getShips());
         addShipSign(screen2, player2.getShips());
 
-        String shootResult = "";
-
+        printBattlefield();
         while (true) {
 
-            System.out.println("               YOU                ");
-            System.out.println("──────────────────────────────────");
-            printScreen(screen1, false);
+            System.out.println("\nYour turn.\nGuess the location of the Enemy's ship!");
+            String hitUser = reader.nextLine();
+            shoot(hitUser, screen2);
+            printBattlefield();
 
-            System.out.println("              ENEMY               ");
-            System.out.println("──────────────────────────────────");
-            printScreen(screen2, false);
+            System.out.println("\nRival's turn.");
+            String hitAI = ai.getGuess();
+            sleepMe(2000);
+            slowly(hitAI);
+            shoot(hitAI, screen1);
+            printBattlefield();
 
-            System.out.println(shootResult);
-            System.out.println("Your turn.\nGuess the location of the Enemy's ship!");
-            String hitPoint = reader.nextLine();
-            shootResult = shoot(hitPoint, screen2);
-            if (hitPoint.equals("kill"))
+            if (hitUser.equals("kill"))
                 break;
         }
-
-
     }
 
-    private String shoot(String hitPoint, String[][] enemyScreen) {
+    private void printBattlefield() {
+        System.out.println("               YOU                ");
+        System.out.println("──────────────────────────────────");
+        printScreen(screen1, false);
+
+        System.out.println("              ENEMY               ");
+        System.out.println("──────────────────────────────────");
+        printScreen(screen2, false);
+    }
+
+    private void shoot(String hitPoint, String[][] enemyScreen) {
         slowly("...");
 
         int x = letterToNum(hitPoint.substring(0, 1));
         int y = Integer.parseInt(hitPoint.substring(1, hitPoint.length()));
 
         if (enemyScreen[x][y].equals("░░░")) {
+            System.out.println("Hit !");
             enemyScreen[x][y] = " X ";
-            return "Hit !";
         } else {
+            System.out.println("Missed.");
             enemyScreen[x][y] = " ○ ";
-            return "Missed.";
         }
 
     }
@@ -109,13 +112,13 @@ public class Game extends Master {
 
             switch (level_input) {
                 case "1":
-                    level = 1;
+                    ai = new AI(1);
                     break label;
                 case "2":
-                    level = 2;
+                    ai = new AI(2);
                     break label;
                 case "3":
-                    level = 3;
+                    ai = new AI(3);
                     break label;
                 default:
                     System.out.println("\n\nWrong level choice try again.");

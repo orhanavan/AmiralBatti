@@ -204,12 +204,12 @@ public class AddShip extends Master {
 
         if (alignment.equals("V")) {
             for (int i = 0; i < length; i++) {
-                coordinates[i] = "" + Master.letters[x - 1] + y;
+                coordinates[i] = "" + numToLetter(x) + y;
                 screen[x++][y] = "░░░";
             }
         } else if (alignment.equals("H")) {
             for (int i = 0; i < length; i++) {
-                coordinates[i] = "" + Master.letters[x - 1] + y;
+                coordinates[i] = "" + numToLetter(x) + y;
                 screen[x][y++] = "░░░";
             }
         }

@@ -1,6 +1,6 @@
 package utils;
 
-abstract class Master {
+public class Master {
 
     public static String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
 
@@ -63,18 +63,26 @@ abstract class Master {
         }
     }
 
+    public String numToLetter(int i) {
+        return letters[i -1];
+    }
+
     public void slowly(String text) {
         String[] txt = text.split("");
         for (String aTxt : txt) {
             System.out.print(aTxt);
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            sleepMe(300);
         }
 
         System.out.println();
+    }
+
+    public void sleepMe(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
