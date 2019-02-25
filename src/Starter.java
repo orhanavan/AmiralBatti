@@ -1,3 +1,4 @@
+import ai.Medium;
 import model.user.Player;
 import model.ships.Ship;
 import utils.AddShip;
@@ -16,30 +17,10 @@ public class Starter {
 
         game.startGame(player, bot);
 
-//        // userı yazdır
-//        System.out.println(player.getName());
-//        for (Ship ship: player.getShips()) {
+//        Medium medium = new Medium();
 //
-//            System.out.println(ship.getLength());
-//
-//            for (String s: ship.getCoordinates()) {
-//                System.out.println(s);
-//            }
-//            System.out.println("---------------------------------");
-//        }
-
-//        // botu yazdır
-//        System.out.println(bot.getName());
-//        for (Ship ship: bot.getShips()) {
-//
-//            System.out.println(ship.getLength());
-//
-//            for (String s: ship.getCoordinates()) {
-//                System.out.println(s);
-//            }
-//            System.out.println("---------------------------------");
-//        }
-
+//        medium.addShootResults("J10", true);
+//        medium.getGuess();
 
     }
 
