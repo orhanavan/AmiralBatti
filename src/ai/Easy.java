@@ -18,6 +18,7 @@ public class Easy extends Master implements AI {
         shootingPoints = new ArrayList<>();
     }
 
+    @Override
     public String getGuess() {
 
         while (true) {
@@ -30,14 +31,15 @@ public class Easy extends Master implements AI {
         }
     }
 
+    @Override
+    public void addShootResults(String hitAI, boolean resultBot) {
+    }
+
     String createRandomPoint() {
         Random random = new Random();
         int x = random.nextInt(10) + 1;
         int y = random.nextInt(10) + 1;
         return numToLetter(x) + y;
-    }
-
-    public void addShootResults(String coordinate, boolean result) {
     }
 
 }
