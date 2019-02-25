@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Easy extends Master {
+public class Easy extends Master implements AI {
 
     /**
      * Her defasında rastgele atış yapar.
@@ -30,7 +30,7 @@ public class Easy extends Master {
         }
     }
 
-    public String createRandomPoint() {
+    String createRandomPoint() {
         Random random = new Random();
         int x = random.nextInt(10) + 1;
         int y = random.nextInt(10) + 1;

@@ -2,6 +2,7 @@ package utils;
 
 import ai.AI;
 import ai.Easy;
+import ai.Hard;
 import ai.Medium;
 import model.ships.Ship;
 import model.user.Player;
@@ -14,7 +15,7 @@ import java.util.Scanner;
 public class Game extends Master {
 
     private String username;
-    private Medium ai;
+    private AI ai;
     private String[][] screen1, screen2;
     private Map<String, Ship> shipCoordinates1, shipCoordinates2;
 
@@ -166,13 +167,13 @@ public class Game extends Master {
 
             switch (level_input) {
                 case "1":
-//                    ai = new Easy();
+                    ai = new Easy();
                     break label;
                 case "2":
                     ai = new Medium();
                     break label;
                 case "3":
-//                    ai = new AI(3);
+                    ai = new Hard();
                     break label;
                 default:
                     System.out.println("\n\nWrong level choice try again.");

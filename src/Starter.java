@@ -19,20 +19,11 @@ public class Starter {
         Player bot = new Player("bot", botShips.getMyShips());
 
         game.startGame(player, bot);
-
-//        HashMap<String, String> hashMap = new HashMap<>();
-//        hashMap.put("orhan33", "1");
-//        hashMap.put("orhan32", "2");
-//        hashMap.put("orhan33", "3");
-//        hashMap.put("orhan33", "4");
 //
-//
-//        for(Map.Entry<String, String> entry : hashMap.entrySet()) {
-//            String key = entry.getKey();
-//            String  value = entry.getValue();
-//
-//            System.out.println(key +"  " + value);
-//        }
+//        Medium medium = new Medium();
+//        medium.addShootResults("C6", true);
+//        System.out.println("-----------");
+//        medium.addShootResults("B6", true);
 
     }
 
