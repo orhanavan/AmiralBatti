@@ -6,20 +6,24 @@ import ai.Medium;
 import model.ships.Ship;
 import model.user.Player;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Game extends Master {
 
     private String username;
     private Medium ai;
-    private String[][] screen1;
-    private String[][] screen2;
+    private String[][] screen1, screen2;
+    private Map<String, Ship> shipCoordinates1, shipCoordinates2;
 
     public Game() {
         selectLevel();
         screen1 = new String[11][11];
         screen2 = new String[11][11];
+        shipCoordinates1 = new HashMap<>();
+        shipCoordinates2 = new HashMap<>();
     }
 
     public String getUsername() {
@@ -31,8 +35,8 @@ public class Game extends Master {
         initScreen(screen2);
 
         Scanner reader = new Scanner(System.in);
-        addShipSign(screen1, player1.getShips());
-        addShipSign(screen2, player2.getShips());
+        addShipSign(screen1, player1.getShips(), (HashMap) shipCoordinates1);
+        addShipSign(screen2, player2.getShips(), (HashMap) shipCoordinates2);
 
         printBattlefield();
         while (true) {
@@ -45,8 +49,11 @@ public class Game extends Master {
                 boolean resultUser = shoot(hitUser, screen2);
                 printShootResult("You", resultUser);
 
-                if (!resultUser)
+                if (resultUser) {
+                    boolean destroyedUser = isDestroyed(hitUser, (HashMap) shipCoordinates2, screen2);
+                } else {
                     break;
+                }
             }
 
             while (true) {
@@ -60,11 +67,32 @@ public class Game extends Master {
                 printShootResult("Rival", resultBot);
                 ai.addShootResults(hitAI, resultBot);
 
-                if (!resultBot)
+                if (resultBot) {
+                    boolean destroyedBot = isDestroyed(hitAI,  (HashMap) shipCoordinates1, screen1);
+                } else {
                     break;
+                }
             }
 
         }
+    }
+
+    private boolean isDestroyed(String point, HashMap shipCoordinates, String[][] screen) {
+
+        Ship ship = (Ship) shipCoordinates.get(point);
+        String[] coordinates = ship.getCoordinates();
+
+        for (String s: coordinates) {
+
+            String x = s.substring(0, 1);
+            String y = s.substring(1, s.length());
+
+            if (!screen[letterToNum(x)][Integer.parseInt(y)].equals(" X "))
+                return false;
+        }
+
+        System.out.println(ship.getName() + " destroyed!");
+        return true;
     }
 
     private void printShootResult(String who, boolean result) {
@@ -104,7 +132,7 @@ public class Game extends Master {
 
     }
 
-    private void addShipSign(String[][] screen, List<Ship> ships) {
+    private void addShipSign(String[][] screen, List<Ship> ships, HashMap shipCoordinates) {
         for (Ship ship: ships) {
 
             for (String coordinate: ship.getCoordinates()) {
@@ -112,8 +140,8 @@ public class Game extends Master {
                 String y = coordinate.substring(1,coordinate.length());
 
                 screen[letterToNum(x)][Integer.parseInt(y)] = "░░░";
+                shipCoordinates.put(coordinate, ship);
             }
-
         }
     }
 

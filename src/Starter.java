@@ -4,6 +4,9 @@ import model.ships.Ship;
 import utils.AddShip;
 import utils.Game;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Starter {
 
     public static void main(String[] args) {
@@ -17,10 +20,19 @@ public class Starter {
 
         game.startGame(player, bot);
 
-//        Medium medium = new Medium();
+//        HashMap<String, String> hashMap = new HashMap<>();
+//        hashMap.put("orhan33", "1");
+//        hashMap.put("orhan32", "2");
+//        hashMap.put("orhan33", "3");
+//        hashMap.put("orhan33", "4");
 //
-//        medium.addShootResults("J10", true);
-//        medium.getGuess();
+//
+//        for(Map.Entry<String, String> entry : hashMap.entrySet()) {
+//            String key = entry.getKey();
+//            String  value = entry.getValue();
+//
+//            System.out.println(key +"  " + value);
+//        }
 
     }
 

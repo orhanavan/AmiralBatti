@@ -1,13 +1,23 @@
 package model.ships;
 
 public abstract class Ship {
+    private String name;
     private int length;
     private String[] coordinates;
     private boolean alive = true;
 
-    Ship(int length, String[] coordinates) {
+    Ship(String name, int length, String[] coordinates) {
+        this.name = name;
         this.length = length;
         this.coordinates = coordinates;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getLength() {

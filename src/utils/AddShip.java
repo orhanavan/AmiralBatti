@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class AddShip extends Master {
 
-    private int NUM_BOAT = 5, NUM_MINESWEEPER = 5, NUM_FRIGATE = 5, NUM_DESTROYER = 2;
+    private int NUM_BOAT = 5, NUM_MINESWEEPER = 3, NUM_FRIGATE = 3, NUM_DESTROYER = 3;
     private String[][] screen = new String[11][11];
     private List<Ship> myShips;
 
