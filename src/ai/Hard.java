@@ -80,10 +80,7 @@ public class Hard extends Medium implements AI {
                 }
             }
 
-            System.out.println("FİRST SHOOT: " + firstShoot);
             firstShoot = coordinate;
-
-
         }
 
         for (String s: decisions) {
@@ -94,7 +91,6 @@ public class Hard extends Medium implements AI {
     private void addLeft(String x, String y) {
         if (!y.equals("1")) {
             String point = x + (Integer.parseInt(y) - 1);
-            System.out.println("SOLA ->" + point + "EKLENDİ");
             if (!shootingPoints.contains(point))
                 decisions.add(point);
         }
@@ -103,7 +99,6 @@ public class Hard extends Medium implements AI {
     private void addRight(String x, String y) {
         if (!y.equals("10")) {
             String point = x + (Integer.parseInt(y) + 1);
-            System.out.println("SAĞA ->" + point + "EKLENDİ");
             if (!shootingPoints.contains(point))
                 decisions.add(point);
         }
@@ -112,7 +107,6 @@ public class Hard extends Medium implements AI {
     private void addTop(String x, String y) {
         if (!x.equals("A")) {
             String point = numToLetter(letterToNum(x) - 1) + y;
-            System.out.println("YUKARIYA ->" + point + "EKLENDİ");
             if (!shootingPoints.contains(point))
                 decisions.add(point);
         }
@@ -121,7 +115,6 @@ public class Hard extends Medium implements AI {
     private void addBottom(String x, String y) {
         if (!x.equals("J")) {
             String point = numToLetter(letterToNum(x) + 1) + y;
-            System.out.println("AŞAĞIYA ->" + point + "EKLENDİ");
             if (!shootingPoints.contains(point))
                 decisions.add(point);
         }
@@ -133,8 +126,7 @@ public class Hard extends Medium implements AI {
 
         if (!y.equals("1")){
             String left = x + (Integer.parseInt(y) - 1);
-            if (original.equals(left))
-                return true;
+            return original.equals(left);
         }
 
         return false;
@@ -146,8 +138,7 @@ public class Hard extends Medium implements AI {
 
         if (!y.equals("10")) {
             String right = x + (Integer.parseInt(y) + 1);
-            if (original.equals(right))
-                return true;
+            return original.equals(right);
         }
 
         return false;
@@ -159,8 +150,7 @@ public class Hard extends Medium implements AI {
 
         if (!x.equals("A")) {
             String top = numToLetter(letterToNum(x) - 1) + y;
-            if (original.equals(top))
-                return true;
+            return original.equals(top);
         }
         return false;
     }
@@ -172,8 +162,7 @@ public class Hard extends Medium implements AI {
         if (!x.equals("J")) {
             String bottom = numToLetter(letterToNum(x) + 1) + y;
 
-            if (original.equals(bottom))
-                return true;
+            return original.equals(bottom);
         }
 
         return false;

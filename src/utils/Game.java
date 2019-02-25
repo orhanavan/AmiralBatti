@@ -40,6 +40,7 @@ public class Game extends Master {
         addShipSign(screen2, player2.getShips(), (HashMap) shipCoordinates2);
 
         printBattlefield();
+        gameLoop:
         while (true) {
 
             while (true) {
@@ -52,6 +53,10 @@ public class Game extends Master {
 
                 if (resultUser) {
                     boolean destroyedUser = isDestroyed(hitUser, (HashMap) shipCoordinates2, screen2);
+                    if (isAllShipsDestroyed(player2)) {
+                        Strings.youWin();
+                        break gameLoop;
+                    }
                 } else {
                     break;
                 }
@@ -70,6 +75,10 @@ public class Game extends Master {
 
                 if (resultBot) {
                     boolean destroyedBot = isDestroyed(hitAI,  (HashMap) shipCoordinates1, screen1);
+                    if (isAllShipsDestroyed(player1)) {
+                        Strings.youLose();
+                        break gameLoop;
+                    }
                 } else {
                     break;
                 }
@@ -78,6 +87,16 @@ public class Game extends Master {
         }
     }
 
+    private boolean isAllShipsDestroyed(Player player) {
+        List<Ship> ships = player.getShips();
+        for (Ship ship: ships) {
+
+            if (ship.isAlive())
+                return false;
+        }
+
+        return true;
+    }
     private boolean isDestroyed(String point, HashMap shipCoordinates, String[][] screen) {
 
         Ship ship = (Ship) shipCoordinates.get(point);
@@ -93,6 +112,7 @@ public class Game extends Master {
         }
 
         System.out.println(ship.getName() + " destroyed!");
+        ship.setAlive(false);
         return true;
     }
 
@@ -148,17 +168,22 @@ public class Game extends Master {
 
     private void selectLevel() {
 
+        Strings.splashScreen();
         System.out.println("Welcome to the Battleships!");
 
         Scanner reader = new Scanner(System.in);
 
-        System.out.print("Enter your name:");
+        System.out.print("Enter your name: ");
         username = reader.nextLine();
+
+        System.out.println("\u001B[33m");
+        slowly("Admiral " + username);
+        System.out.println("\u001B[0m");
 
         label:
         while (true) {
 
-            System.out.println("\n(1) Easy");
+            System.out.println("(1) Easy");
             System.out.println("(2) Normal");
             System.out.println("(3) Hard");
             System.out.println("\nSelect level:");
