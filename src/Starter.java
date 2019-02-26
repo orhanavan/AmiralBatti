@@ -1,11 +1,6 @@
-import ai.Medium;
 import model.user.Player;
-import model.ships.Ship;
 import utils.AddShip;
 import utils.Game;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Starter {
 
@@ -19,13 +14,7 @@ public class Starter {
         Player bot = new Player("bot", botShips.getMyShips());
 
         game.startGame(player, bot);
-//
-//        Medium medium = new Medium();
-//        medium.addShootResults("C6", true);
-//        System.out.println("-----------");
-//        medium.addShootResults("B6", true);
 
     }
-
 
 }

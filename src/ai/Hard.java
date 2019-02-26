@@ -2,10 +2,14 @@ package ai;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Hard extends Medium implements AI {
 
+    /**
+     * Easy ve Medium’un tüm özelliklerini taşır.
+     * Ek olarak bir başarılı atış ardından gelen yoklama atışlarında,
+     * düşmanın yatayda mı dikeyde mi olduğunu anlar ve uygun atışlar üretir
+     */
     private List<String> shootingPoints;
     private List<String> decisions;
     private String firstShoot;
@@ -23,11 +27,8 @@ public class Hard extends Medium implements AI {
             if (decisions.size() != 0) {
                 point = makeDecision(decisions);
 
-                decisions.remove(point); // atış yaptıktan sonra onu önerilerden sil
-                System.out.println("DECISION WORKED");
-            }
-            else {
-                System.out.println("RANDOM WORKED");
+                decisions.remove(point);
+            } else {
                 point = createRandomPoint();
                 firstShoot = point;
             }
@@ -39,11 +40,9 @@ public class Hard extends Medium implements AI {
         }
     }
 
-    /** tüm karar seçeneklerinden 1 tanesini seçer */
-    public String makeDecision(List<String> decisions) {
-        Random random = new Random();
-        int i = random.nextInt(decisions.size());
-        return decisions.get(i);
+    @Override
+    public void removeAllDecisions() {
+        decisions.clear();
     }
 
     @Override
@@ -53,12 +52,10 @@ public class Hard extends Medium implements AI {
             String x = coordinate.substring(0, 1);
             String y = coordinate.substring(1, coordinate.length());
 
-            // ATIŞ ÖNERİLENLER İÇERİSİNDE DEĞİLSE
-            if (!decisions.contains(coordinate)){
+            if (!decisions.contains(coordinate)) {
                 if (isRight(firstShoot, coordinate)) {
                     removeTopBottom(firstShoot);
                     addLeft(x, y);
-
 
                 } else if (isLeft(firstShoot, coordinate)) {
                     removeTopBottom(firstShoot);
@@ -83,9 +80,9 @@ public class Hard extends Medium implements AI {
             firstShoot = coordinate;
         }
 
-        for (String s: decisions) {
-            System.out.println("DECISIONS: " + s);
-        }
+//        for (String s : decisions) {
+//            System.out.println("DECISIONS: " + s);
+//        }
     }
 
     private void addLeft(String x, String y) {
@@ -124,7 +121,7 @@ public class Hard extends Medium implements AI {
         String x = shoot.substring(0, 1);
         String y = shoot.substring(1, shoot.length());
 
-        if (!y.equals("1")){
+        if (!y.equals("1")) {
             String left = x + (Integer.parseInt(y) - 1);
             return original.equals(left);
         }
@@ -172,7 +169,7 @@ public class Hard extends Medium implements AI {
         String x = point.substring(0, 1);
         String y = point.substring(1, point.length());
 
-        if (!y.equals("1")){
+        if (!y.equals("1")) {
             String left = x + (Integer.parseInt(y) - 1);
             decisions.remove(left);
         }

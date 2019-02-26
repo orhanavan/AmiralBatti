@@ -6,8 +6,11 @@ public class Medium extends Easy implements AI {
 
     private List<String> shootingPoints;
     private List<String> decisions;
-    private String firstShoot;
 
+    /**
+     * Easy gibi her defasında rastgele ve tekrasız atış yapar.
+     * Bir isabetli atış kaydettiğinde, atışın etrafında 4 yönde tekrar atış yapar.
+     */
     public Medium() {
         shootingPoints = new ArrayList<>();
         decisions = new ArrayList<>();
@@ -20,14 +23,12 @@ public class Medium extends Easy implements AI {
 
             if (decisions.size() != 0) {
                 point = makeDecision(decisions);
-
-                decisions.remove(point); // atış yaptıktan sonra onu önerilerden sil
+                decisions.remove(point);
                 System.out.println("DECISION WORKED");
             }
             else {
                 System.out.println("RANDOM WORKED");
                 point = createRandomPoint();
-                firstShoot = point;
             }
 
             if (!shootingPoints.contains(point)) {
@@ -37,7 +38,6 @@ public class Medium extends Easy implements AI {
         }
     }
 
-    /** tüm karar seçeneklerinden 1 tanesini seçer */
     public String makeDecision(List<String> decisions) {
         Random random = new Random();
         int i = random.nextInt(decisions.size());
@@ -47,51 +47,53 @@ public class Medium extends Easy implements AI {
     @Override
     public void addShootResults(String coordinate, boolean result) {
         if (result) {
-            System.out.println("ATIŞ BAŞARILI");
 
             String x = coordinate.substring(0, 1);
             String y = coordinate.substring(1, coordinate.length());
 
-            // ATIŞ ÖNERİLENLER İÇERİSİNDE DEĞİLSE
             if (!decisions.contains(coordinate)){
-                // 4 NOKTASINDADA OLABİLİR
-
-                // left
-                if (!y.equals("1")) {
-                    String point = x + (Integer.parseInt(y) - 1);
-                    if (!shootingPoints.contains(point))
-                        decisions.add(point);
-                }
-                // right
-                if (!y.equals("10")) {
-                    String point = x + (Integer.parseInt(y) + 1);
-                    if (!shootingPoints.contains(point))
-                        decisions.add(point);
-                }
-                // top
-                if (!x.equals("A")) {
-                    String point = numToLetter(letterToNum(x) - 1) + y;
-                    if (!shootingPoints.contains(point))
-                        decisions.add(point);
-                }
-                // bottom
-                if (!x.equals("J")) {
-                    String point = numToLetter(letterToNum(x) + 1) + y;
-                    if (!shootingPoints.contains(point))
-                        decisions.add(point);
-                }
-            } else {
-                // atış önerilenler içerisindeyse
+                addLeft(x, y);
+                addRight(x, y);
+                addTop(x, y);
+                addBottom(x, y);
             }
-
-        } else {
-            System.out.println("ATIŞ BAŞARISIZ");
-        }
-
-        for (String s: decisions) {
-            System.out.println("DECISIONS: " + s);
         }
     }
 
+    @Override
+    public void removeAllDecisions() {
+    }
+
+    private void addLeft(String x, String y) {
+        if (!y.equals("1")) {
+            String point = x + (Integer.parseInt(y) - 1);
+            if (!shootingPoints.contains(point))
+                decisions.add(point);
+        }
+    }
+
+    private void addRight(String x, String y) {
+        if (!y.equals("10")) {
+            String point = x + (Integer.parseInt(y) + 1);
+            if (!shootingPoints.contains(point))
+                decisions.add(point);
+        }
+    }
+
+    private void addTop(String x, String y) {
+        if (!x.equals("A")) {
+            String point = numToLetter(letterToNum(x) - 1) + y;
+            if (!shootingPoints.contains(point))
+                decisions.add(point);
+        }
+    }
+
+    private void addBottom(String x, String y) {
+        if (!x.equals("J")) {
+            String point = numToLetter(letterToNum(x) + 1) + y;
+            if (!shootingPoints.contains(point))
+                decisions.add(point);
+        }
+    }
 
 }

@@ -10,7 +10,8 @@ public class Easy extends Master implements AI {
 
     /**
      * Her defasında rastgele atış yapar.
-     * Atış yaptığı bir noktaya tekrar atış yapmaz.
+     * Atışlar tekrarsızdır.
+     * Atış yapılan bir noktaya tekrar atış yapılmaz.
      */
     private List<String> shootingPoints;
 
@@ -33,6 +34,10 @@ public class Easy extends Master implements AI {
 
     @Override
     public void addShootResults(String hitAI, boolean resultBot) {
+    }
+
+    @Override
+    public void removeAllDecisions() {
     }
 
     String createRandomPoint() {

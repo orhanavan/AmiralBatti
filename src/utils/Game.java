@@ -17,12 +17,15 @@ public class Game extends Master {
     private String username;
     private AI ai;
     private String[][] screen1, screen2;
+    private static String[][] screen3;
+
     private Map<String, Ship> shipCoordinates1, shipCoordinates2;
 
     public Game() {
         selectLevel();
         screen1 = new String[11][11];
         screen2 = new String[11][11];
+        screen3 = new String[11][11];
         shipCoordinates1 = new HashMap<>();
         shipCoordinates2 = new HashMap<>();
     }
@@ -34,6 +37,7 @@ public class Game extends Master {
     public void startGame(Player player1, Player player2) {
         initScreen(screen1);
         initScreen(screen2);
+        initScreen(screen3);
 
         Scanner reader = new Scanner(System.in);
         addShipSign(screen1, player1.getShips(), (HashMap) shipCoordinates1);
@@ -48,7 +52,7 @@ public class Game extends Master {
                 System.out.println("Your turn.\nGuess the location of the Enemy's ship!");
                 String hitUser = reader.nextLine();
 
-                boolean resultUser = shoot(hitUser, screen2);
+                boolean resultUser = shoot(hitUser, screen2, true);
                 printShootResult("You", resultUser);
 
                 if (resultUser) {
@@ -69,12 +73,15 @@ public class Game extends Master {
                 sleepMe(2000);
                 slowly(hitAI);
 
-                boolean resultBot = shoot(hitAI, screen1);
+                boolean resultBot = shoot(hitAI, screen1, false);
                 printShootResult("Rival", resultBot);
                 ai.addShootResults(hitAI, resultBot);
 
                 if (resultBot) {
                     boolean destroyedBot = isDestroyed(hitAI,  (HashMap) shipCoordinates1, screen1);
+                    if (destroyedBot)
+                        ai.removeAllDecisions();
+
                     if (isAllShipsDestroyed(player1)) {
                         Strings.youLose();
                         break gameLoop;
@@ -132,10 +139,10 @@ public class Game extends Master {
 
         System.out.println("              ENEMY               ");
         System.out.println("──────────────────────────────────");
-        printScreen(screen2, false);
+        printScreen(screen3, false);
     }
 
-    private boolean shoot(String hitPoint, String[][] enemyScreen) {
+    private boolean shoot(String hitPoint, String[][] enemyScreen, boolean who) {
         slowly("...");
 
         int x = letterToNum(hitPoint.substring(0, 1));
@@ -143,10 +150,14 @@ public class Game extends Master {
 
         if (enemyScreen[x][y].equals("░░░")) {
             enemyScreen[x][y] = " X ";
+            if (who)
+                screen3[x][y] = " X ";
             printBattlefield();
             return true;
         } else {
             enemyScreen[x][y] = " ○ ";
+            if (who)
+            screen3[x][y] = " ○ ";
             printBattlefield();
             return false;
         }
